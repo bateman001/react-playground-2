@@ -2,14 +2,13 @@ import React from 'react';
 
 class RouletteGun extends React.Component{
     
-    static defaultProp = {
+    static defaultProps = {
         bulletInChamber: 8
     }
 
     state = {
         chamber: null,
-        spinningTheChamber: false,
-        msg: ' '
+        spinningTheChamber: false
     }
 
     getRandomNumber(){
@@ -17,50 +16,50 @@ class RouletteGun extends React.Component{
           }
     
 
-    pullTheTrigger = (val) => {
+    pullTheTrigger = () => {
 
         this.setState({
             spinningTheChamber: true,
+            chamber: null
         });
+
+
         console.log(this.state.spinningTheChamber);
         console.log(this.state.chamber);
 
-        // setTimeout(() =>{
-        //     this.setState({
-        //         chamber: this.getRandomNumber(),
-        //         spinningTheChamber: false
-        //     });
-        //     console.log(this.state.spinningTheChamber);
-        // }, 2000);
+        setTimeout(() => {
+            this.setState({
+                chamber: this.getRandomNumber(),
+                spinningTheChamber: false
+            });
+        }, 2000);
 
-      this.setState( {
-            msg: this.displayMessage()
-      });
+
 
     }
 
-    displayMessage = (msg) => {
-        console.log(this.state.spinningTheChamber);
+    message = () => {
 
+        let msg;
+        console.log(this.state.chamber, this.props.bulletInChamber);
         if(this.state.spinningTheChamber === true){
                 msg = "spinning the chamber and pulling the trigger! ...."
-    
+        }else{
+
+             if(this.state.chamber === this.props.bulletInChamber){
+                msg = "BANG!!!!";
+            }else{
+                msg = "Safe";
+            }
         }
-
-    //   if(this.state.chamber === this.props.bulletInChamber){
-    //         msg = "BANG!!!!";
-    //     }else{
-    //         msg = "Safe";
-    //     }
-
         return msg;
     }
 
     render(){
         return (
             <div>
-                <p>{this.state.msg}</p>
-                <button onClick={this.pullTheTrigger(this.state.spinningTheChamber)}>Pull the Trigger</button>
+                <p>{this.message()}</p>
+                <button onClick={this.pullTheTrigger}>Pull the Trigger</button>
             </div>
         )
     }
